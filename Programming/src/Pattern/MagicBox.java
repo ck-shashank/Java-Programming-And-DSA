@@ -2,7 +2,7 @@ package Pattern;
 
 public class MagicBox {
   public static void main(String[] args) {
-	int num =5;
+	int num =3;
 	for(int i=1;i<=num;i++) {
 		for(int j=1;j<=num;j++) {
 			System.out.print(i+""+j+" ");
