@@ -1,8 +1,0 @@
-package Array;
-
-public class ReverseInTwoHalf {
-public static void main(String[] args) {
-	int num=121313;
-	 System.out.println(num);
-}
-}

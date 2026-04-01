@@ -1,7 +1,0 @@
-package pkg3;
-
-public class ComparableSort {
-     public static void main(String[] args) {
-		
-	}
-}

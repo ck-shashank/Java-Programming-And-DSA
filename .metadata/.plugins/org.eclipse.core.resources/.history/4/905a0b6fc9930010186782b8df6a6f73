@@ -1,7 +1,0 @@
-package pkg3;
-
-public class CollectionsSort {
-     public static void main(String[] args) {
-		
-	}
-}
