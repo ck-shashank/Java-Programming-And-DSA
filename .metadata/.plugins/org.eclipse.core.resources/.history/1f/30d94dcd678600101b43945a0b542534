@@ -1,0 +1,32 @@
+package pkg1;
+
+public class SypNoRecursion {
+public static void main(String[] args) {
+	int num=124;
+	int sum=0;
+	int prod=1;
+	print(num,sum,prod);
+}
+public static void print(int num, int sum, int prod)
+{
+  if(num==0)
+  {
+	  if(sum==prod)
+	  {
+		  System.out.println("SPY Number");
+		  return;
+	  }
+	  else {
+		  System.out.println("Not SPY number");
+		 // return;
+	  }
+  }
+  int rem=num%10;
+  sum=sum+rem;
+  prod=prod*rem;
+  num=num/10;
+  print(num,sum,prod);
+  
+}
+
+}

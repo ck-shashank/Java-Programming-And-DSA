@@ -1,0 +1,28 @@
+package Array;
+
+public class ReverseInTwoHalf {
+public static void main(String[] args) {
+	int num=121313;
+	 System.out.println(num);
+	 reverse(num);
+}
+public static void reverse(int num) {
+	int count=0; int temp=num;
+	while(num!=0) {
+		count++;
+		num=num/10;
+	}
+	if(count%2!=0) return;
+	int [] arr=new int[count];
+	num=temp;
+	int i=0;
+	while(num!=0) {
+		int rem=num%10;
+		arr[i]=rem;
+		System.out.print(arr[i]);
+		i++;
+		num=num/10;
+	}
+	
+}
+}

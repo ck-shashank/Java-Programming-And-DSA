@@ -1,0 +1,32 @@
+package pkg1;
+
+public class Service {
+   public static void getDetails(Emp x)
+   {
+	   System.out.println(x.un);
+	   System.out.println(x.id);
+	   System.out.println(Emp.companyName);
+   }
+   
+   public static double hike(Emp x, double per)
+   {
+	   return x.sal+(x.sal*per/100);
+   }
+   
+   public static void max(Emp a, Emp b, Emp c)
+   {
+	   if(a.sal>b.sal && a.sal>c.sal)
+	   {
+		  System.out.println(a.un); 
+	   }
+	   else if( b.sal>c.sal)
+	   {
+		   System.out.println(b.sal);
+	   }
+	   else
+	   {
+		   System.out.println(c.sal);
+	   }
+	   
+   }
+}

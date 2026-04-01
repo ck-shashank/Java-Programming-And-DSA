@@ -1,0 +1,9 @@
+package pkg2;
+
+import java.util.ArrayList;
+
+public class Dstabase {
+	ArrayList<Emp> e1=new ArrayList<>();
+	ArrayList<Course> c1= new ArrayList<>();
+
+}

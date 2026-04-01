@@ -1,0 +1,20 @@
+package pkg1;
+
+public class ReadDigit {
+public static void main(String[] args) {
+	int num=123;
+	int i=1;
+	print(i,num);
+}
+public static void digit(int i, int num)
+{
+     if(num==0)
+     {
+    	 return;
+     }
+     int rem=num%10;
+     System.out.println(rem);
+     
+     print(++i,num/10);
+}
+}

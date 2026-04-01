@@ -1,0 +1,19 @@
+package library;
+
+import java.time.LocalDate;
+
+public class HistoryRecord {
+    public int bookId;
+    public String title;
+    public String action; // Issued or Returned
+    public String adminName;
+    public LocalDate date;
+
+    public HistoryRecord(int bookId, String title, String action, String adminName, LocalDate date) {
+        this.bookId = bookId;
+        this.title = title;
+        this.action = action;
+        this.adminName = adminName;
+        this.date = date;
+    }
+}

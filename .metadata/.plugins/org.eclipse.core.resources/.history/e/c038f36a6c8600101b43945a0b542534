@@ -1,0 +1,31 @@
+package pkg1;
+
+public class ReverseNumber {
+public static void main(String[] args) {
+	int num = 121;
+	int temp=num;
+	int rev=0;
+	print(num, rev, temp);
+	
+	
+}
+public static void print(int num, int rev , int temp)
+{
+  if(num==0)
+  {
+	  if(rev==temp)
+  {
+	  System.out.println("palindrome number");
+	  return;   
+  }
+	  else {
+		  System.out.println("Not palindrome number");
+		  return;
+		  }
+	  }
+  int rem =num%10;
+  rev=rev*10+rem;
+  num=num/10;
+  print(num, rev, temp);
+}
+}

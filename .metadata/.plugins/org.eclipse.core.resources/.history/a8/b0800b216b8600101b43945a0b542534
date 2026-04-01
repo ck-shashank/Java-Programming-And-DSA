@@ -1,0 +1,23 @@
+package pkg1;
+
+public class ReverseNumber {
+public static void main(String[] args) {
+	int num = 123;
+	int rev=0;
+	print(num, rev);
+	
+	
+}
+public static void print(int num, int rev)
+{
+  if(num==0)
+  {
+	  System.out.println(rev);
+	  return;
+  }
+  int rem =num%10;
+  rev=rev*10+rem;
+  num=num/10;
+  print(num, rev);
+}
+}
