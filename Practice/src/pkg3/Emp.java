@@ -1,0 +1,35 @@
+package pkg3;
+
+
+public class Emp implements Comparable<Emp>{
+      String name;
+      int id;
+      double sal;
+      Address address;
+	  public Emp(String name, int id, double sal,Address address) {
+		super();
+		this.name = name;
+		this.id = id;
+		this.sal = sal;
+		this.address=address;
+		
+	  }
+	  public Emp(Emp x) {
+		  name=x.name;
+		  id=x.id;
+		  sal=x.sal;
+		  address=x.address;
+	  }
+	  @Override
+	  public String toString() {
+		return "Emp [name=" + name + ", id=" + id + ", sal=" + sal + ", address=" + address + "]";
+	  }
+	  @Override
+	  public int compareTo(Emp o) {
+		  return (int) (o.sal-this.sal);
+	  }
+	  
+}
+	  
+      
+

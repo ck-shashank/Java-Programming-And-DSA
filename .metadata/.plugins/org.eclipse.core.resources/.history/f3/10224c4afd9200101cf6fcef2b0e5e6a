@@ -1,0 +1,22 @@
+package String;
+
+public class UpperLower {
+ public static void main(String[] args) {
+	 String str="Java";
+	 System.out.println(str);
+	 System.out.println(toUpperCase(str));
+}
+ public static String toUpperCase(String str) {
+	 String result="";
+	 for(int i=0;i<str.length();i++) {
+		 char ch=str.charAt(i);
+		 if(ch>='a' && ch<='z') {
+			 ch-=48;
+			 result+=ch;
+		 }
+		 else
+			 result+=ch;
+	 }
+	 return result;
+ }
+}

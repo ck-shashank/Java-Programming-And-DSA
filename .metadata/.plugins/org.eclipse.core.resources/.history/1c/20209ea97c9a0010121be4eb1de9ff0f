@@ -1,0 +1,15 @@
+package pkg2;
+
+public class EmpService {
+	private static EmpService emp=null;
+	static boolean login=false;
+	private EmpService() {}
+	public static EmpService createObject() {
+		if(emp==null) {
+			emp=new EmpService();
+		}
+		return emp;
+	}
+	
+
+}

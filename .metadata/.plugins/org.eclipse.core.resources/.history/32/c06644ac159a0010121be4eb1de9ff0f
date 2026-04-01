@@ -1,0 +1,7 @@
+package pkg2;
+
+public class Exe {
+    public static void main(String[] args) {
+		Admin.loggedIn("girish@email.com","abc@1234");
+	}
+}

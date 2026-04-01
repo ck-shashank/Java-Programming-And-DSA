@@ -1,0 +1,15 @@
+package pkg2;
+
+public class Admin {
+private static Admin a1=null;
+private static String pass=abc@123;
+private static String email=girish@email.com;
+  static boolean login=false;
+  private public Admin{}
+  public static Admin createObject(){
+	  if(a1==null) {
+		  a1=new Admin();
+	  }
+	  return a1;
+  }
+}

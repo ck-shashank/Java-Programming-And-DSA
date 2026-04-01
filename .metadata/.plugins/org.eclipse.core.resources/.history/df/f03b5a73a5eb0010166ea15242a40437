@@ -1,0 +1,310 @@
+package library;
+
+import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class Library {
+
+    public Map<Integer, Book> books = new HashMap<>();
+    public Map<String, User> users = new HashMap<>();
+    public Map<String, Admin> admins = new HashMap<>();
+
+    public Admin loggedInAdmin = null;
+    public User loggedInUser = null;
+
+    // ---------------- ADMIN ----------------
+    public void registerAdmin(Admin a) {
+        if (admins.containsKey(a.username)) {
+            System.out.println("❌ Admin username already exists.");
+            return;
+        }
+        admins.put(a.username, a);
+        System.out.println("✅ Admin registered successfully.");
+    }
+
+    public boolean adminLogin(String username, String password) {
+        Admin a = admins.get(username);
+        if (a != null && a.password.equals(password)) {
+            loggedInAdmin = a;
+            return true;
+        }
+        return false;
+    }
+
+    public void adminLogout() {
+        loggedInAdmin = null;
+    }
+
+    // ---------------- USER ----------------
+    public void registerUser(User u) {
+        if (users.containsKey(u.username)) {
+            System.out.println("❌ Username already exists.");
+            return;
+        }
+        users.put(u.username, u);
+        System.out.println("✅ User registered successfully.");
+    }
+
+    public boolean userLogin(String username, String password) {
+        User u = users.get(username);
+        if (u != null && u.password.equals(password)) {
+            loggedInUser = u;
+            return true;
+        }
+        return false;
+    }
+
+    public void userLogout() {
+        loggedInUser = null;
+    }
+
+    // ---------------- BOOK ----------------
+    public void addBook(Book b) {
+        if (loggedInAdmin == null) {
+            System.out.println("❌ Admin login required.");
+            return;
+        }
+        if (books.containsKey(b.id)) {
+            books.get(b.id).addCopy(b.copies);
+            System.out.println("✅ Additional copies added. Total copies: " + books.get(b.id).copies);
+        } else {
+            books.put(b.id, b);
+            System.out.println("✅ Book added successfully.");
+        }
+    }
+
+    public void updateBook(int id, String newTitle, String newAuthor) {
+        if (loggedInAdmin == null) { System.out.println("❌ Admin login required."); return; }
+        Book b = books.get(id);
+        if (b == null) { System.out.println("❌ Book not found."); return; }
+        b.title = newTitle; b.author = newAuthor;
+        System.out.println("✅ Book updated successfully.");
+    }
+
+    public void deleteBook(int id) {
+        if (loggedInAdmin == null) { System.out.println("❌ Admin login required."); return; }
+        if (books.remove(id) != null) System.out.println("✅ Book deleted.");
+        else System.out.println("❌ Book not found.");
+    }
+
+    public void viewBooks() {
+        System.out.printf("%-5s | %-25s | %-20s\n", "ID", "Title", "Author");
+        System.out.println("--------------------------------------------------------");
+        for (Book b : books.values()) if (b.isAvailable())
+            System.out.printf("%-5d | %-25s | %-20s\n", b.id, b.title, b.author);
+    }
+
+    public void viewAllBooksAdmin() {
+        System.out.printf("%-5s | %-25s | %-20s | %-6s | %-9s\n",
+                "ID", "Title", "Author", "Copies", "Status");
+        System.out.println("---------------------------------------------------------------");
+        for (Book b : books.values())
+            System.out.printf("%-5d | %-25s | %-20s | %-6d | %-9s\n",
+                    b.id, b.title, b.author, b.copies, b.getStatus());
+    }
+
+    public void searchBook(Integer id, String title, String author) {
+        boolean found = false;
+        System.out.printf("%-5s | %-25s | %-20s | %-9s\n", "ID", "Title", "Author", "Status");
+        System.out.println("----------------------------------------------------");
+        for (Book b : books.values()) {
+            if ((id != null && b.id == id) ||
+                (title != null && b.title.equalsIgnoreCase(title)) ||
+                (author != null && b.author.equalsIgnoreCase(author))) {
+                System.out.printf("%-5d | %-25s | %-20s | %-9s\n", b.id, b.title, b.author, b.getStatus());
+                found = true;
+            }
+        }
+        if (!found) System.out.println("❌ Book not found.");
+    }
+
+    // ---------------- ADMIN ISSUE / RETURN ----------------
+    public void adminIssueBook(int bookId, String username) {
+        if (loggedInAdmin == null) { System.out.println("❌ Admin login required."); return; }
+        Book b = books.get(bookId);
+        User u = users.get(username);
+        if (b == null) { System.out.println("❌ Book not found."); return; }
+        if (u == null) { System.out.println("❌ User not found."); return; }
+        if (!b.isAvailable()) { System.out.println("❌ Book unavailable."); return; }
+        if (!u.canIssueMoreBooks()) { System.out.println("❌ User already has 3 books issued."); return; }
+
+        b.reduceCopy();
+        u.issuedBooks.add(b);
+        u.history.add(new HistoryRecord(b.id, b.title, "Issued", loggedInAdmin.name, LocalDate.now()));
+        System.out.println("✅ Book '" + b.title + "' issued to " + u.name + " by Admin " + loggedInAdmin.name);
+    }
+
+    public void adminReturnBook(int bookId, String username) {
+        if (loggedInAdmin == null) { System.out.println("❌ Admin login required."); return; }
+        Book b = books.get(bookId);
+        User u = users.get(username);
+        if (b == null || u == null) { System.out.println("❌ Book or user not found."); return; }
+        if (!u.issuedBooks.contains(b)) { System.out.println("❌ User has not issued this book."); return; }
+
+        b.increaseCopy();
+        u.issuedBooks.remove(b);
+        u.history.add(new HistoryRecord(b.id, b.title, "Returned", loggedInAdmin.name, LocalDate.now()));
+        System.out.println("✅ Book '" + b.title + "' returned by " + u.name + " via Admin " + loggedInAdmin.name);
+
+        // Notify reservations
+        if (!b.reservations.isEmpty()) {
+            System.out.println("🔔 Notification: Book '" + b.title + "' is now available for reserved users.");
+            b.reservations.clear();
+        }
+    }
+
+    // ---------------- USER REQUEST / RESERVATION ----------------
+    public void requestBook(int bookId) {
+        if (loggedInUser == null) { System.out.println("❌ Login required."); return; }
+        Book b = books.get(bookId);
+        if (b == null) { System.out.println("❌ Book not found."); return; }
+        if (b.isAvailable()) { System.out.println("✅ Book is available, ask admin to issue."); return; }
+        if (!b.reservations.contains(loggedInUser.username)) {
+            b.reservations.add(loggedInUser.username);
+            System.out.println("✅ Book reserved. You will be notified when available.");
+        } else {
+            System.out.println("❌ You already reserved this book.");
+        }
+    }
+
+    public void cancelReservation(int bookId) {
+        if (loggedInUser == null) { System.out.println("❌ Login required."); return; }
+        Book b = books.get(bookId);
+        if (b == null) { System.out.println("❌ Book not found."); return; }
+        if (b.reservations.remove(loggedInUser.username)) System.out.println("✅ Reservation canceled.");
+        else System.out.println("❌ You have not reserved this book.");
+    }
+
+    // ---------------- USER HISTORY ----------------
+    public void viewUserHistory(String username) {
+        User u = users.get(username);
+        if (u == null) { System.out.println("❌ User not found."); return; }
+        System.out.printf("%-5s | %-25s | %-10s | %-15s | %-12s\n", "ID", "Title", "Action", "Admin", "Date");
+        System.out.println("----------------------------------------------------------------");
+        for (HistoryRecord h : u.history)
+            System.out.printf("%-5d | %-25s | %-10s | %-15s | %-12s\n",
+                    h.bookId, h.title, h.action, h.adminName, h.date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    }
+
+    public void dueDateReminder(User u) {
+        System.out.println("⚠️ Due Date Reminder:");
+        LocalDate today = LocalDate.now();
+        boolean found = false;
+        for (HistoryRecord h : u.history) {
+            if (h.action.equals("Issued") && h.date.plusDays(14).isBefore(today)) {
+                System.out.printf("Book ID: %d | %s | Issued on: %s | Overdue!\n", h.bookId, h.title, h.date);
+                found = true;
+            }
+        }
+        if (!found) System.out.println("No overdue books.");
+    }
+
+    // ---------------- REPORTS ----------------
+    public void reportIssuedBooks() {
+        System.out.println("📄 Issued Books Report:");
+        System.out.printf("%-5s | %-25s | %-15s | %-15s | %-12s\n", "ID", "Title", "User", "Admin", "Date");
+        System.out.println("---------------------------------------------------------------");
+        for (User u : users.values())
+            for (HistoryRecord h : u.history)
+                if (h.action.equals("Issued"))
+                    System.out.printf("%-5d | %-25s | %-15s | %-15s | %-12s\n",
+                            h.bookId, h.title, u.name, h.adminName, h.date);
+    }
+
+    public void reportOverdueBooks() {
+        System.out.println("📄 Overdue Books Report:");
+        LocalDate today = LocalDate.now();
+        System.out.printf("%-5s | %-25s | %-15s | %-12s\n", "ID", "Title", "User", "Due Date");
+        System.out.println("-----------------------------------------------");
+        for (User u : users.values())
+            for (HistoryRecord h : u.history)
+                if (h.action.equals("Issued") && h.date.plusDays(14).isBefore(today))
+                    System.out.printf("%-5d | %-25s | %-15s | %-12s\n",
+                            h.bookId, h.title, u.name, h.date.plusDays(14));
+    }
+
+    public void reportUserActivity() {
+        System.out.println("📄 User Activity Report:");
+        for (User u : users.values()) {
+            System.out.println("User: " + u.name + " (" + u.username + ")");
+            viewUserHistory(u.username);
+        }
+    }
+
+    // ---------------- VIEW USERS ----------------
+    public void viewAllUsers() {
+        System.out.printf("%-5s | %-20s | %-15s | %-12s | %-12s\n", "ID", "Name", "Username", "Phone", "Status");
+        System.out.println("---------------------------------------------------------");
+        for (User u : users.values())
+            System.out.printf("%-5d | %-20s | %-15s | %-12s | %-12s\n",
+                    u.id, u.name, u.username, u.phone, u.getStatus());
+    }
+// update user
+    public void updateUser(String username) {
+        if (loggedInAdmin == null) {
+            System.out.println("❌ Admin login required.");
+            return;
+        }
+
+        User u = users.get(username);
+        if (u == null) {
+            System.out.println("❌ User not found.");
+            return;
+        }
+
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Updating user: " + u.name);
+
+        // ---------------- Update Name ----------------
+        while (true) {
+            System.out.print("New Name (leave blank to skip): ");
+            String name = sc.nextLine().trim();
+            if (name.isEmpty()) break; // skip updating
+            if (name.matches("[A-Za-z ]+")) {
+                u.name = name;
+                break;
+            } else {
+                System.out.println("❌ Only letters and spaces allowed.");
+            }
+        }
+
+        // ---------------- Update Phone ----------------
+        while (true) {
+            System.out.print("Phone (10 digits, leave blank to skip): ");
+            String phone = sc.nextLine().trim();
+            if (phone.isEmpty()) break; // skip updating
+            if (phone.matches("\\d{10}")) {
+                u.phone = phone;
+                break;
+            } else {
+                System.out.println("❌ Invalid phone number.");
+            }
+        }
+
+        // ---------------- Update Password ----------------
+        while (true) {
+            System.out.print("New Password (leave blank to skip, min 4 chars): ");
+            String password = sc.nextLine().trim();
+            if (password.isEmpty()) break; // skip updating
+            if (password.length() >= 4) {
+                u.password = password;
+                break;
+            } else {
+                System.out.println("❌ Password must be at least 4 characters.");
+            }
+        }
+
+        System.out.println("✅ User information updated successfully.");
+    }
+
+
+    public void deleteUser(String username) {
+        if (loggedInAdmin == null) { System.out.println("❌ Admin login required."); return; }
+        User u = users.get(username);
+        if (u == null) { System.out.println("❌ User not found."); return; }
+        if (!u.issuedBooks.isEmpty()) { System.out.println("❌ Cannot delete user with issued books."); return; }
+        users.remove(username);
+        System.out.println("✅ User deleted successfully.");
+    }
+}

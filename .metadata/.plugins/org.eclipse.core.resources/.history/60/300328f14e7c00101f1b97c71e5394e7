@@ -1,0 +1,14 @@
+package pkg1;
+
+public class StudService {
+    
+	public static void swap(Student s1, Student s2)
+	{
+		s1.id=s1.id+s2.id;
+		s2.id=s1.id-s2.id;
+		s1.id=s1.id-s2.id;
+		System.out.println("After Swapping");
+		System.out.println(s1.id);
+		System.out.println(s2.id);
+	}
+}

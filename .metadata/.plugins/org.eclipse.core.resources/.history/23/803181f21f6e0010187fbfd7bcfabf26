@@ -1,0 +1,59 @@
+package pkg1;
+
+public class BankAccount {
+	String un;
+	long accNo;
+	double bal;
+	static String bankName="SBI";
+	
+	public  BankAccount(String un, long accNo, double bal) {
+		this.un=un;
+		this.accNo=accNo;
+		this.bal=bal;
+		System.out.println("Bank Account is created!");
+		
+	}
+	
+	public void deposite(double amt) {
+		bal=bal+amt;
+		System.out.println("After Deposite new Balance is : "+bal);
+		System.out.println("-------------------");
+		
+	}
+	
+	public void withdraw(double amt) {
+		
+		if(bal >= amt)
+		{
+			bal=bal-amt;
+			System.out.println("After withraw the new Balance is : "+bal);
+		}
+		else
+		{
+			System.out.println("Insufficient Balance.....");
+		}
+		
+	}
+	
+	public void checkBal() {
+		System.out.println(" Balance is : "+bal);
+		System.out.println("-------------------");
+	}
+	
+	public void details() {
+		System.out.println("UserName = " +un);
+		System.out.println("AccNo =  "+accNo);
+		System.out.println("Bal = "+bal);
+		System.out.println("BankName= "+bankName);
+	}
+	
+	public static void main(String[] args) {
+		BankAccount b1=new BankAccount("Tejas", 556640874420L, 1500.0);
+				b1.deposite(1000.0);
+				b1.withdraw(1200.0);
+				b1.checkBal();
+				b1.details();
+		
+	}
+	
+}

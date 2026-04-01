@@ -1,0 +1,65 @@
+package library;
+
+import java.util.Scanner;
+
+public class InputValidator {
+
+    public static int readInt(Scanner sc, String message) {
+        while (true) {
+            System.out.print(message);
+            String input = sc.nextLine().trim();
+            try {
+                int num = Integer.parseInt(input);
+                if (num <= 0) throw new NumberFormatException();
+                return num;
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Invalid number. Enter positive digits only.");
+            }
+        }
+    }
+
+    public static String readName(Scanner sc, String message) {
+        while (true) {
+            System.out.print(message);
+            String input = sc.nextLine().trim();
+            if (input.matches("[A-Za-z ]+") && !input.isEmpty()) return input;
+            System.out.println("❌ Only letters and spaces allowed.");
+        }
+    }
+
+    public static String readUsername(Scanner sc, String message) {
+        while (true) {
+            System.out.print(message);
+            String input = sc.nextLine().trim();
+            if (input.matches(".*[A-Za-z].*") && input.length() >= 3) return input;
+            System.out.println("❌ Username must be at least 3 chars and contain letters.");
+        }
+    }
+
+    public static String readPassword(Scanner sc, String message) {
+        while (true) {
+            System.out.print(message);
+            String input = sc.nextLine().trim();
+            if (input.length() >= 4) return input;
+            System.out.println("❌ Password must be at least 4 characters.");
+        }
+    }
+
+    public static String readPhone(Scanner sc) {
+        while (true) {
+            System.out.print("Phone (10 digits): ");
+            String input = sc.nextLine().trim();
+            if (input.matches("\\d{10}")) return input;
+            System.out.println("❌ Invalid phone number.");
+        }
+    }
+
+    public static String readString(Scanner sc, String message) {
+        while (true) {
+            System.out.print(message);
+            String input = sc.nextLine().trim();
+            if (!input.isEmpty()) return input;
+            System.out.println("❌ Input cannot be empty.");
+        }
+    }
+}

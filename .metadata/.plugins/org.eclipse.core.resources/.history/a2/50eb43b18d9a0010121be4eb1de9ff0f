@@ -1,0 +1,59 @@
+package pkg2;
+
+public class EmpService {
+	private static EmpService emp=null;
+	static boolean login=false;
+	private EmpService() {}
+	public static EmpService createObject() {
+		if(emp==null) {
+			emp=new EmpService();
+		}
+		return emp;
+	}
+	public static void login(String email,String pass) {
+		if(login) {
+			System.out.println("already login");
+			return;
+			
+		}
+		else {
+			 for(Emp e: Dstabase.e1) {
+				 if(e.getEmail().equals(email)&&e.getPass().equals(pass)) {
+					 login=true;
+					 return;
+				 }
+				 else {
+					 System.out.println("invalid credential");
+					 return;
+				 }
+			 }
+		}
+	}
+	public static void addCourse(Course c) {
+		if(login) {
+			Dstabase.c1.add(c);
+			System.out.println("course added");
+		}
+		else {
+			System.out.println("not logged in");
+			return;
+		}
+	}
+	public static void removeCourse(String courseId) {
+		if(login) {
+			for(Course c:Dstabase.c1) {
+				if(courseId.equals(c.getCourseID())) {
+					Dstabase.c1.remove(c);
+					System.out.println("course removed");
+				}
+			}
+			System.out.println("course not found");
+		}
+		else {
+			System.out.println("not loggged in");
+			return;
+		}
+	}
+	
+
+}

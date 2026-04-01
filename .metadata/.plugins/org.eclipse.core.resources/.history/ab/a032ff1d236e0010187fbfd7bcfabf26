@@ -1,0 +1,44 @@
+package pkg1;
+
+public class FB {
+String un;
+long mob;
+int pass;
+String email;
+
+public FB(String un, long mob, int pass, String email ) {
+	this.un=un;
+	this.mob=mob;
+	this.pass=pass;
+	this.email=email;
+	System.out.println("FB account is created!");
+	System.out.println("-------------------------");
+}
+
+public void details() {
+	System.out.println(un);
+	System.out.println(mob);
+	System.out.println(pass);
+	System.out.println(email);
+	}
+
+public void updateUn(String newUn, int pass) {
+	if(pass==this.pass)
+	{
+		un=newUn;
+		System.out.println("User name updated");
+	}
+	else
+	{
+		System.out.println("Invalid password!");
+	}
+}
+
+public static void main(String[] args) {
+	FB f1=new FB("Tejas",9128521727L,1234,"tejas123@gmail.com");
+	f1.details();
+	f1.updateUn("Joshit", 1234);
+	f1.details();
+}
+
+}

@@ -1,0 +1,68 @@
+package pkg2;
+
+public class Admin {
+private static Admin a1=null;
+private static String pass="abc@123";
+private static String email="girish@email.com";
+  static  boolean login=false;
+  private Admin(){}
+  public static Admin createObject(){
+	  if(a1==null) {
+		  a1=new Admin();
+	  }
+	  return a1;
+  }
+  public static void loggedIn(String email,String pass) {
+	  if(login) {
+		  System.out.println("already login");
+		  return;
+	  }
+	  else {
+		  if(Admin.pass.equals(pass) && Admin.email.equals(email) ) {
+			  login=true;
+			  System.out.println("logged in");
+		  }
+		  else
+			  System.out.println("invalid credential");
+	  }
+  }
+  public static void addEmp(Emp x) {
+	  if(login) {
+		  Dstabase.e1.add(x);
+		  System.out.println("Emp added");
+	  }
+	  else
+	  System.out.println("not logged in");
+  }
+  public static void  removeEmp(String email) {
+	  if(login) {
+		  for(Emp e:Dstabase.e1) {
+			  if(e.getEmail().equals(email)) {
+				  Dstabase.e1.remove(e);
+				  System.out.println("removed");
+				  return;
+			  }
+			  
+		  }
+		  System.out.println("Object not found");
+		  
+	  }
+	  else {
+		  System.out.println("login required");
+	  }
+	  
+	  
+  }
+  public static void logOut() {
+	  if(login) {
+		  login=false;
+		  System.out.println("logged_out");
+	  }
+	  else
+	  {
+		  System.out.println("already logout");
+		  return;
+	  }
+	  
+  }
+}

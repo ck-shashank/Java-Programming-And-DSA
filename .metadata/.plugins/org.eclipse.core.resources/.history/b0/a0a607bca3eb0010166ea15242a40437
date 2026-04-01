@@ -1,0 +1,250 @@
+package library;
+
+import java.util.Scanner;
+
+public class LibraryManagementSystem {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+        Library lib = new Library();
+
+        int choice;
+
+        while (true) {
+            System.out.println("\n===== LIBRARY MANAGEMENT SYSTEM =====");
+            System.out.println("1. Admin Register");
+            System.out.println("2. Admin Login");
+            System.out.println("3. User Register");
+            System.out.println("4. User Login");
+            System.out.println("5. Exit");
+            System.out.print("Enter choice: ");
+
+            choice = InputValidator.readInt(sc, "Enter a valid number: ");
+
+            switch (choice) {
+
+                // ---------------- ADMIN REGISTER ----------------
+                case 1:
+                    int aid = InputValidator.readInt(sc, "Admin ID: ");
+                    String aname = InputValidator.readName(sc, "Name: ");
+                    String aun = InputValidator.readUsername(sc, "Username: ");
+                    String apw = InputValidator.readPassword(sc, "Password: ");
+                    String aphone = InputValidator.readPhone(sc);
+
+                    lib.registerAdmin(new Admin(aid, aname, aun, apw, aphone));
+                    break;
+
+                // ---------------- ADMIN LOGIN ----------------
+                case 2:
+                    String alogin = InputValidator.readUsername(sc, "Username: ");
+                    String apass = InputValidator.readPassword(sc, "Password: ");
+
+                    if (lib.adminLogin(alogin, apass)) {
+                        System.out.println("✅ Admin logged in.");
+                        adminMenu(sc, lib);
+                    } else {
+                        System.out.println("❌ Invalid admin credentials.");
+                    }
+                    break;
+
+                // ---------------- USER REGISTER ----------------
+                case 3:
+                    int uid = InputValidator.readInt(sc, "User ID: ");
+                    String uname = InputValidator.readName(sc, "Name: ");
+                    String uun = InputValidator.readUsername(sc, "Username: ");
+                    String upw = InputValidator.readPassword(sc, "Password: ");
+                    String uphone = InputValidator.readPhone(sc);
+
+                    lib.registerUser(new User(uid, uname, uun, upw, uphone));
+                    break;
+
+                // ---------------- USER LOGIN ----------------
+                case 4:
+                    String ulogin = InputValidator.readUsername(sc, "Username: ");
+                    String upassLogin = InputValidator.readPassword(sc, "Password: ");
+
+                    if (lib.userLogin(ulogin, upassLogin)) {
+                        System.out.println("✅ User logged in.");
+                        userMenu(sc, lib);
+                    } else {
+                        System.out.println("❌ Invalid user credentials.");
+                    }
+                    break;
+
+                case 5:
+                    System.out.println("Thank you!");
+                    System.exit(0);
+
+                default:
+                    System.out.println("❌ Invalid choice.");
+            }
+        }
+    }
+
+    // ================= ADMIN MENU =================
+    static void adminMenu(Scanner sc, Library lib) {
+        int ch;
+        do {
+            System.out.println("\n--- ADMIN MENU ---");
+            System.out.println("1. Add Book");
+            System.out.println("2. Update Book");
+            System.out.println("3. Delete Book");
+            System.out.println("4. View All Books");
+            System.out.println("5. Search Book");
+            System.out.println("6. Issue Book");
+            System.out.println("7. Return Book");
+            System.out.println("8. View All Users");
+            System.out.println("9. View User History");
+            System.out.println("10. Reports (Issued/Overdue/User Activity)");
+            System.out.println("11. Logout");
+            System.out.println("12. Update User Information");
+            System.out.println("13. Delete User");
+            System.out.print("Enter choice: ");
+
+            ch = InputValidator.readInt(sc, "Enter a valid number: ");
+
+            switch (ch) {
+                case 1: // Add Book
+                    int bid = InputValidator.readInt(sc, "Book ID: ");
+                    String title = InputValidator.readString(sc, "Title: ");
+                    String author = InputValidator.readString(sc, "Author: ");
+                    int copies = InputValidator.readInt(sc, "Number of copies: ");
+                    lib.addBook(new Book(bid, title, author, copies));
+                    break;
+
+                case 2: // Update Book
+                    int ubid = InputValidator.readInt(sc, "Book ID to update: ");
+                    String nt = InputValidator.readString(sc, "New Title: ");
+                    String na = InputValidator.readString(sc, "New Author: ");
+                    lib.updateBook(ubid, nt, na);
+                    break;
+
+                case 3: // Delete Book
+                    int dbid = InputValidator.readInt(sc, "Book ID to delete: ");
+                    lib.deleteBook(dbid);
+                    break;
+
+                case 4: // View All Books
+                    lib.viewAllBooksAdmin();
+                    break;
+
+                case 5: // Search Book
+                    System.out.println("Search by: 1.ID  2.Title  3.Author");
+                    int s = InputValidator.readInt(sc, "Choice: ");
+                    sc.nextLine();
+                    if (s == 1) lib.searchBook(InputValidator.readInt(sc, "Enter ID: "), null, null);
+                    else if (s == 2) lib.searchBook(null, InputValidator.readString(sc, "Enter Title: "), null);
+                    else if (s == 3) lib.searchBook(null, null, InputValidator.readString(sc, "Enter Author: "));
+                    break;
+
+                case 6: // Issue Book
+                    int ibid = InputValidator.readInt(sc, "Book ID to issue: ");
+                    String iuname = InputValidator.readUsername(sc, "Username of User: ");
+                    lib.adminIssueBook(ibid, iuname);
+                    break;
+
+                case 7: // Return Book
+                    int rbid = InputValidator.readInt(sc, "Book ID to return: ");
+                    String runame = InputValidator.readUsername(sc, "Username of User: ");
+                    lib.adminReturnBook(rbid, runame);
+                    break;
+
+                case 8: // View Users
+                    lib.viewAllUsers();
+                    break;
+
+                case 9: // View User History
+                    String unameHist = InputValidator.readUsername(sc, "Enter username: ");
+                    lib.viewUserHistory(unameHist);
+                    break;
+
+                case 10: // Reports
+                    System.out.println("1. Issued Books  2. Overdue Books  3. User Activity");
+                    int rep = InputValidator.readInt(sc, "Enter choice: ");
+                    if (rep == 1) lib.reportIssuedBooks();
+                    else if (rep == 2) lib.reportOverdueBooks();
+                    else if (rep == 3) lib.reportUserActivity();
+                    break;
+
+                case 11: // Logout
+                    lib.adminLogout();
+                    System.out.println("✅ Admin logged out.");
+                    break;
+
+                case 12: // Update User
+                    String unameUpd = InputValidator.readUsername(sc, "Username to update: ");
+                    lib.updateUser(unameUpd);
+                    break;
+
+                case 13: // Delete User
+                    String unameDel = InputValidator.readUsername(sc, "Username to delete: ");
+                    lib.deleteUser(unameDel);
+                    break;
+
+                default:
+                    System.out.println("❌ Invalid choice.");
+            }
+
+        } while (ch != 11);
+    }
+
+    // ================= USER MENU =================
+    static void userMenu(Scanner sc, Library lib) {
+        int ch;
+        do {
+            System.out.println("\n--- USER MENU ---");
+            System.out.println("1. View Available Books");
+            System.out.println("2. Search Book");
+            System.out.println("3. Request Book");
+            System.out.println("4. Cancel Reservation");
+            System.out.println("5. View My History");
+            System.out.println("6. Due Date Reminder");
+            System.out.println("7. Logout");
+            System.out.print("Enter choice: ");
+
+            ch = InputValidator.readInt(sc, "Enter a valid number: ");
+
+            switch (ch) {
+                case 1:
+                    lib.viewBooks();
+                    break;
+
+                case 2:
+                    System.out.println("Search by: 1.ID  2.Title  3.Author");
+                    int s = InputValidator.readInt(sc, "Choice: ");
+                    sc.nextLine();
+                    if (s == 1) lib.searchBook(InputValidator.readInt(sc, "Enter ID: "), null, null);
+                    else if (s == 2) lib.searchBook(null, InputValidator.readString(sc, "Enter Title: "), null);
+                    else if (s == 3) lib.searchBook(null, null, InputValidator.readString(sc, "Enter Author: "));
+                    break;
+
+                case 3:
+                    int bid = InputValidator.readInt(sc, "Book ID to request: ");
+                    lib.requestBook(bid);
+                    break;
+
+                case 4:
+                    int rbid = InputValidator.readInt(sc, "Book ID to cancel reservation: ");
+                    lib.cancelReservation(rbid);
+                    break;
+
+                case 5:
+                    lib.viewUserHistory(lib.loggedInUser.username);
+                    break;
+
+                case 6:
+                    lib.dueDateReminder(lib.loggedInUser);
+                    break;
+
+                case 7:
+                    lib.userLogout();
+                    System.out.println("✅ User logged out.");
+                    break;
+
+                default:
+                    System.out.println("❌ Invalid choice.");
+            }
+        } while (ch != 7);
+    }
+}

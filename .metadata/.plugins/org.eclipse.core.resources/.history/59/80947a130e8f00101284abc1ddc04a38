@@ -1,0 +1,18 @@
+package pkg3;
+
+import java.util.ArrayList;
+
+public class EvenArraylist {
+  public static void main(String[] args) {
+	ArrayList<Integer> a1=new ArrayList<Integer>();
+	a1.add(20);
+	a1.add(25);
+	a1.add(32);
+	a1.add(55);
+	for(Integer n: a1) {
+		if(n%2==0) {
+			System.out.println(n);
+		}
+	}
+}
+}

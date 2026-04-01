@@ -1,0 +1,40 @@
+package pkg3;
+
+public class Exe {
+	public static void main(String[] args) {
+	/*	Student s1= new Student("Abc", 1, 5000.0);
+		Student s2= new Student("Xyz", 2, 5000.0);
+		System.out.println(s1);  //s1.toString()
+		System.out.println(s1.equals(s2));// compare based on fees not on object address
+		System.out.println(s1.hashCode());
+		System.out.println(s2.hashCode());
+		*
+		*/
+//		Emp e1= new Emp("Chandan", 1, 20000.0);
+//		Emp e2=new Emp("Shashank", 2, 20000.0);
+//		System.out.println(e1);
+//		System.out.println(e2);
+//		System.out.println(e1.equals(e2));
+//		System.out.println(e1.hashCode());
+//		System.out.println(e2.hashCode());
+//		Max3Object x= Max3Object.createObject();
+//		Max3Object y= Max3Object.createObject();
+//		Max3Object z= Max3Object.createObject();
+//	//	Max3Object y1= Max3Object.createObject();
+//		Max3Object a=Max3Object.createObject();
+//		System.out.println(x);
+//		System.out.println(y);
+//		System.out.println(z);
+//		System.out.println(a);
+		Address a1=new Address("HYD", "Telangana",843331 );
+		Student s1= new Student("Abc", 1, 10000.0, a1);
+		Emp e1=new Emp("Xyz", 2, 10000.0, a1);
+		System.out.println(s1.address);
+		System.out.println(s1.address.city);
+		System.out.println(e1);
+		Emp e2=new Emp(e1);
+		System.out.println(e2);
+		
+	}
+
+}

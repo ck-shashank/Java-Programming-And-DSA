@@ -1,0 +1,37 @@
+package pkg1;
+
+public class StudService {
+    
+	public static void swap(Student s1, Student s2)
+	{
+		s1.id=s1.id+s2.id;
+		s2.id=s1.id-s2.id;
+		s1.id=s1.id-s2.id;
+		System.out.println("After Swapping");
+		System.out.println(s1.id);
+		System.out.println(s2.id);
+	}
+	
+	public static void swapAllDetails(Student s1, Student s2)
+	{
+		System.out.println("Before Swapping");
+		System.out.println(s1.sname);
+		System.out.println(s1.id);
+		System.out.println(s1.branch);
+		System.out.println(Student.collegeName);
+		System.out.println("Details of student s1 after swapimg");
+		System.out.println(s2.sname);
+		System.out.println(s2.id);
+		System.out.println(s2.branch);
+		System.out.println(Student.collegeName);
+	}
+	
+	public static void main(String[] args) {
+		
+		Student s1 = new Student("pk", 1, "CSE") ;
+		Student s2 = new Student ("ck",2, "CSE");
+		
+		StudService.swap(s1, s2);
+		StudService.swapAllDetails(s1, s2);
+	}
+}

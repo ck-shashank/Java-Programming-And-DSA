@@ -1,0 +1,31 @@
+package String;
+
+public class Permutation {
+  public static void main(String[] args) {
+	String str="abc";
+	System.out.println("str");
+	permutaion(str,0,str.length()-1);
+}
+
+  private static void permutaion(String str, int start, int end) {
+	 if(start==end) {
+		 System.out.println(str);
+		 return;
+	 }
+	 for(int k=start;k<=end;k++) {
+		 String res=swap(str,start,k);
+		 permutaion(res,start+1,end);
+	 }
+	
+  }
+
+  private static String swap(String str, int i, int j) {
+	 if(str.length()<=1) return str;
+	 char[] ch=str.toCharArray();
+	 char temp=ch[i];
+	 ch[i]=ch[j];
+	 ch[j]=temp;
+	 return new String(ch);
+  }
+ 
+}

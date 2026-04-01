@@ -1,0 +1,14 @@
+package pkg2;
+
+public class Exe {
+    public static void main(String[] args) {
+		Admin.loggedIn("girish@email.com","abc@123");
+	
+    Emp e1=new Emp("ck", "a@123", 987654L, "abv123");
+    Admin.addEmp(e1);
+    System.out.println(Dstabase.e1);
+    Admin.removeEmp("a@123");
+    System.out.println(Dstabase.e1);
+    
+}
+}

@@ -1,0 +1,28 @@
+package pkg1;
+
+public class REcursion {
+public static void main(String[] args) {
+	int num =9;
+	int i =1;
+	int count =0;
+	perfect(i,num,count);
+	
+}
+public static void perfect(int i, int num, int count)
+{
+	if(i>num) {
+		 
+			System.out.println(count);
+			return ;
+		}
+		
+	
+	
+	if(num%i==0) 
+		count++;
+	
+	perfect(++i, num , count);
+		
+}
+}
+

@@ -1,0 +1,18 @@
+package String;
+
+ 
+
+public class ReverseStringWordWise {
+ public static void main(String[] args) {
+	String str="Hyderabad to Welcome";
+	System.out.println(str);
+	String [] arr=str.split(" ");
+	String result="";
+	for(int i=arr.length-1;i>=0;i--) {
+		if(i==0) result+=arr[i];
+		else
+		result+=arr[i]+" ";
+	}
+	System.out.println(result);
+}
+}

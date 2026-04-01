@@ -1,0 +1,28 @@
+package String;
+
+public class Demo {
+  public static void main(String[] args) {
+	  // String creation with parameterized constructor and new keyword
+	String str1= new String("java");
+	System.out.println(str1);
+	String str2= new String("program");
+	System.out.println(str2);
+	String str3= new String("java");
+	System.out.println(str3);
+	System.out.println(str1==str2);//false
+	System.out.println(str1.equals(str2));//false
+	System.out.println(str1==str3);//false
+	System.out.println(str1.equals(str3));// true
+	//String creation with default constructor and new keyword
+	String s1= new String();
+	s1="Python";
+	String s2= new String();
+	s2="Program";
+	String s3=new String();
+	s3="Python";
+	System.out.println(s1==s2);//false
+	System.out.println(s1.equals(s2));//false
+	System.out.println(s1==s3);//true
+	System.out.println(s1.equals(s3));//true
+}
+}
