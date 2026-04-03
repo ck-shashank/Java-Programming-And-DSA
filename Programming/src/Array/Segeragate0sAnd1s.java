@@ -15,7 +15,7 @@ public class Segeragate0sAnd1s {
          arr[left]=arr[right];
          arr[right]=temp;
 	 }
-	 
+	
  }
   
  for(int e: arr) {
