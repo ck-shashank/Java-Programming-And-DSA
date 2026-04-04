@@ -15,10 +15,7 @@ public static void main(String[] args) {
 			j--;
 		}
 	}
-	while(j>=0) {
-		arr[j]=0;
-		j--;
-	}
+ 
 	for(int ele: arr) {
 		System.out.print(ele+" ");
 	}
