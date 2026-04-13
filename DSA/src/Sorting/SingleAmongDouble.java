@@ -10,7 +10,7 @@ public static void main(String[] args) {
 		 int mid= low+(high-low)/2;
 		 if(mid%2==1) mid--;
 		 
-		 if(arr[mid]==arr[mid+1]) //every element is in pair till mid+1 , so check right portion
+		 if(arr[mid]==arr[mid+1]) //every element is in pair till mid+1 from low , so check right portion
 			 low=mid+2;
 		 else  //till mid from low all are not in pair, check left portion
 			high=mid; 
