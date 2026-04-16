@@ -6,6 +6,7 @@ import java.util.Scanner;
 //This series is a mixture of 2 series all the odd terms in this series form a 
 //geometric series and all the even terms form yet another geometric series. 
 //Write a program to find the Nth ferm in the series.
+//Assume n not exceed 30
 public class NthTerm {
 public static void main(String[] args) {
 	Scanner sc= new Scanner(System.in);
@@ -13,6 +14,7 @@ public static void main(String[] args) {
 	int n=sc.nextInt();
 	
 	//first check whether the n is even or odd , for even it is in gp with r=3, for odd it is in gp with r=2
+	if(n<=30) {
 	if(n%2==0) {
 		int nth= (int) Math.pow(3, n/2 -1); //gp series nth term formula a.r^(n-1)
 		System.out.println(nth);
@@ -21,5 +23,8 @@ public static void main(String[] args) {
 		int nth= (int) Math.pow(2, n/2);
 		System.out.println(nth);
 	}
+	}
+	else
+		System.out.println("Exceed limit");
 }
 }
